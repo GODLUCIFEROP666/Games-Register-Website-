@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAMES — Ultimate Gaming Experience</title>
+    <meta name="description"
+        content="Ultimate gaming experience - esports tournaments, VR experiences, and cloud gaming. Book your session today!">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <style>
+        /* ===== RESET & ROOT ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        :root {
+            --gradient-primary: linear-gradient(135deg, #00A3C4 0%, #2563EB 100%);
+            --gradient-hot: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+            --primary-color: #00A3C4;
+            --secondary-color: #2563EB;
+            --dark: #0a0a1a;
+            --card-bg: rgba(255, 255, 255, 0.93);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: transparent;
+            overflow-x: hidden;
+        }
+
+        /* ===== SCROLL REVEAL ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            z-index: 200;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .appointment-btn {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.7rem 1.4rem;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 163, 196, 0.25);
+        }
+
+        .appointment-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 163, 196, 0.4);
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2.5px;
+            background: #333;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        /* ===== VANTA BACKGROUND ===== */
+        #vanta-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: transparent;
+            padding: 10rem 2rem 6rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.12;
+            top: -250px;
+            right: -200px;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-text {
+            animation: fadeInLeft 0.9s ease-out;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(175, 184, 179, 0.12);
+            border: 1px solid rgba(0, 163, 196, 0.3);
+            color: var(--primary-color);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-text h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.15;
+        }
+
+        .hero-text p {
+            color: #1a56db;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+            font-size: 1.15rem;
+            font-weight: 500;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.9rem 2rem;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 6px 20px rgba(0, 163, 196, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 163, 196, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            padding: 0.9rem 2rem;
+            border-radius: 14px;
+            border: 2px solid var(--primary-color);
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
+            position: relative;
+            animation: fadeInRight 0.9s ease-out;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 24px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-18px);
+            }
+        }
+
+        .float {
+            animation: float 5s ease-in-out infinite;
+        }
+
+        /* ===== STATS SECTION ===== */
+        .stats {
+            background: var(--card-bg);
+            padding: 4rem 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .stats-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {}
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 0.4rem;
+            font-weight: 500;
+        }
+
+        /* ===== SHARED SECTION TITLE ===== */
+        .section-title {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.05rem;
+            margin-bottom: 4rem;
+            max-width: 560px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        /* ===== SERVICES ===== */
+        .services {
+            background: transparent;
+            padding: 8rem 2rem;
+            position: relative;
+        }
+
+        .services-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.07);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .service-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 60px rgba(0, 163, 196, 0.15);
+        }
+
+        .service-icon {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .service-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #222;
+            font-weight: 700;
+        }
+
+        .service-card p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* ===== GAMES ===== */
+        .Games {
+            background: transparent;
+            padding: 8rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .Games-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+
+        .Games-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.07);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+        }
+
+        .Games-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 60px rgba(0, 163, 196, 0.18);
+        }
+
+        .Games-image-wrap {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .Games-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
+        }
+
+        .Games-card:hover .Games-image {
+            transform: scale(1.1);
+        }
+
+        .Games-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--gradient-primary);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        .Games-info {
+            padding: 1.5rem 2rem;
+            text-align: center;
+        }
+
+        .Games-info h3 {
+            font-size: 1.4rem;
+            color: #222;
+            margin-bottom: 0.4rem;
+            font-weight: 700;
+        }
+
+        .Games-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* ===== TOURNAMENT SECTION ===== */
+        .tournament {
+            padding: 8rem 2rem;
+            position: relative;
+        }
+
+        .tournament-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .tournament-image img {
+            width: 100%;
+            border-radius: 24px;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.2);
+        }
+
+        .tournament-text h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.2rem;
+            line-height: 1.2;
+        }
+
+        .tournament-text p {
+            color: #555;
+            line-height: 1.8;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .prize-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .prize-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #444;
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+        }
+
+        .prize-list li i {
+            color: #f59e0b;
+            font-size: 1.1rem;
+            width: 20px;
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials {
+            padding: 8rem 2rem;
+            background: transparent;
+        }
+
+        .testimonials-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.07);
+            transition: transform 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            position: relative;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .quote-icon {
+            font-size: 3rem;
+            line-height: 1;
+            color: var(--primary-color);
+            opacity: 0.2;
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+        }
+
+        .testimonial-stars {
+            color: #f59e0b;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-text {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .author-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .av1 {
+            background: linear-gradient(135deg, #00A3C4, #2563EB);
+        }
+
+        .av2 {
+            background: linear-gradient(135deg, #7c3aed, #db2777);
+        }
+
+        .av3 {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+        }
+
+        .author-info h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .author-info span {
+            font-size: 0.82rem;
+            color: #888;
+        }
+
+        /* ===== PRICING ===== */
+        .pricing {
+            padding: 8rem 2rem;
+        }
+
+        .pricing-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .pricing-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.07);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card.popular {
+            border-color: var(--primary-color);
+            transform: scale(1.04);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-primary);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.3rem 1.5rem;
+            border-radius: 0 0 12px 12px;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 60px rgba(0, 163, 196, 0.15);
+        }
+
+        .pricing-card.popular:hover {
+            transform: scale(1.04) translateY(-8px);
+        }
+
+        .pricing-icon {
+            font-size: 2.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .pricing-period {
+            color: #999;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            padding: 0.5rem 0;
+            color: #555;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .pricing-features li i {
+            color: #00A3C4;
+            font-size: 0.8rem;
+        }
+
+        .pricing-btn {
+            width: 100%;
+            padding: 0.85rem;
+            border-radius: 12px;
+            border: 2px solid var(--primary-color);
+            background: transparent;
+            color: var(--primary-color);
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .pricing-btn:hover,
+        .pricing-card.popular .pricing-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* ===== FAQ ===== */
+        .faq {
+            padding: 8rem 2rem;
+        }
+
+        .faq-inner {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .faq-question {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 1.3rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #222;
+            text-align: left;
+            gap: 1rem;
+        }
+
+        .faq-question i {
+            color: var(--primary-color);
+            transition: transform 0.3s;
+            flex-shrink: 0;
+        }
+
+        .faq-item.open .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, padding 0.35s;
+            padding: 0 1.5rem;
+        }
+
+        .faq-answer p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            padding-bottom: 1.3rem;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+        }
+
+        /* ===== NEWSLETTER ===== */
+        .newsletter {
+            padding: 6rem 2rem;
+        }
+
+        .newsletter-box {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--gradient-primary);
+            border-radius: 28px;
+            padding: 4rem 3rem;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 163, 196, 0.25);
+        }
+
+        .newsletter-box h2 {
+            color: white;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+        }
+
+        .newsletter-box p {
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.75rem;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.85rem 1.2rem;
+            border-radius: 12px;
+            border: none;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .newsletter-form button {
+            background: white;
+            color: var(--secondary-color);
+            padding: 0.85rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: transform 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            transform: scale(1.05);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 5rem 2rem 2rem;
+            border-top: 1px solid #e5e7eb;
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .footer-brand p {
+            color: #777;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(0, 163, 196, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        .social-btn:hover {
+            background: var(--gradient-primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-col h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 1.2rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.7rem;
+        }
+
+        .footer-col ul li a {
+            text-decoration: none;
+            color: #666;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-col p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .footer-col .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            margin-bottom: 0.7rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .footer-col .contact-item i {
+            color: var(--primary-color);
+            margin-top: 2px;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom p {
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        /* ===== SCROLL TO TOP ===== */
+        #scrollTop {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(0, 163, 196, 0.4);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 300;
+        }
+
+        #scrollTop.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #scrollTop:hover {
+            transform: translateY(-3px);
+        }
+
+        /* ===== APPOINTMENT MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            position: absolute;
+            width: 360px;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            cursor: move;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .modal-header {
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 1rem;
+            cursor: move;
+        }
+
+        .modal h2 {
+            font-size: 1.3rem;
+            text-align: center;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .form-group {
+            margin-bottom: 0.85rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.82rem;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.55rem 0.9rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            transition: border-color 0.3s;
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: white;
+        }
+
+        .submit-btn {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            width: 100%;
+            font-size: 0.95rem;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.92;
+        }
+
+        .close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 1.4rem;
+            color: #bbb;
+            cursor: pointer;
+            transition: color 0.3s;
+            line-height: 1;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-25px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            0% {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .pricing-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .services-grid,
+            .Games-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tournament-inner {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .pricing-card.popular {
+                transform: scale(1);
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .modal-content {
+                width: 95vw;
+            }
+        }
+
+        /* Mobile Nav */
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            position: fixed;
+            top: 72px;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1.5rem 2rem;
+            gap: 1.2rem;
+            z-index: 190;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(12px);
+        }
+
+        .mobile-nav.open {
+            display: flex;
+        }
+
+        .mobile-nav a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            padding: 0.3rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vanta-bg"></div>
+
+    <!-- SCROLL TO TOP -->
+    <button id="scrollTop" title="Back to top"><i class="fas fa-chevron-up"></i></button>
+
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="game_logo.png" alt="Games Logo">
+                GAMES
+            </div>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#services">Services</a>
+                <a href="#Games">Games</a>
+                <a href="#tournament">Tournament</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="nav-right">
+                <button class="appointment-btn" id="appointmentBtn">
+                    <i class="fas fa-calendar-check"></i> Book Session
+                </button>
+                <button class="hamburger" id="hamburger" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MOBILE NAV -->
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#Games">Games</a>
+        <a href="#tournament">Tournament</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge"><i class="fas fa-gamepad"></i> #1 Gaming Platform</div>
+                <h1>Ultimate Gaming Experience</h1>
+                <p>Dive into the future of gaming with cutting-edge technology, pro-level competition, and immersive
+                    virtual worlds. Your victory starts here!</p>
+                <div class="hero-cta">
+                    <a href="#Games" class="btn-primary"><i class="fas fa-play"></i> Explore Games</a>
+                    <button class="btn-outline" id="heroBookBtn"><i class="fas fa-calendar"></i> Book Now</button>
+                </div>
+            </div>
+            <div class="hero-image float">
+                <img src="hero_gaming.png" alt="Gaming Setup">
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <div class="stats">
+        <div class="stats-grid">
+            <div class="stat-item reveal">
+                <div class="stat-number" data-target="5000">0</div>
+                <div class="stat-label">Active Gamers</div>
+            </div>
+            <div class="stat-item reveal">
+                <div class="stat-number" data-target="120">0</div>
+                <div class="stat-label">Tournaments Held</div>
+            </div>
+            <div class="stat-item reveal">
+                <div class="stat-number" data-target="50">0</div>
+                <div class="stat-label">Games Available</div>
+            </div>
+            <div class="stat-item reveal">
+                <div class="stat-number" data-target="98">0</div>
+                <div class="stat-label">% Satisfaction</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVICES -->
+    <section class="services" id="services">
+        <h2 class="section-title reveal">Our Services</h2>
+        <p class="section-subtitle reveal">Everything you need for the ultimate gaming experience under one roof.</p>
+        <div class="services-grid">
+            <div class="service-card reveal">
+                <div class="service-icon"><i class="fas fa-trophy"></i></div>
+                <h3>Esports Tournaments</h3>
+                <p>Competitive gaming events with massive prize pools, real-time leaderboards, and live streaming.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon"><i class="fas fa-vr-cardboard"></i></div>
+                <h3>VR &amp; AR Experiences</h3>
+                <p>Immersive gaming with the latest Virtual and Augmented Reality headsets and environments.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon"><i class="fas fa-cloud"></i></div>
+                <h3>Cloud Gaming</h3>
+                <p>Play AAA titles on any device — no expensive hardware needed, zero lag guaranteed.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                <h3>Pro Coaching</h3>
+                <p>Learn from certified esports coaches and level up your gameplay with personalized sessions.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon"><i class="fas fa-users"></i></div>
+                <h3>Team Matchmaking</h3>
+                <p>Get matched with players of similar skill levels and build your dream team for tournaments.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon"><i class="fas fa-headset"></i></div>
+                <h3>24/7 Support</h3>
+                <p>Round-the-clock technical support to ensure your gaming sessions are always smooth.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- GAMES -->
+    <section class="Games" id="Games">
+        <h2 class="section-title reveal">Featured Games</h2>
+        <p class="section-subtitle reveal">Pick your battleground and conquer the leaderboard.</p>
+        <div class="Games-grid">
+            <div class="Games-card reveal">
+                <div class="Games-image-wrap">
+                    <img src="arena_games.png" alt="Arena Games" class="Games-image">
+                    <span class="Games-badge">🔥 Hot</span>
+                </div>
+                <div class="Games-info">
+                    <h3>Arena Games</h3>
+                    <p>Epic 5v5 battles in stunning arenas</p>
+                </div>
+            </div>
+            <div class="Games-card reveal">
+                <div class="Games-image-wrap">
+                    <img src="game_booking.png" alt="Game Booking Center" class="Games-image">
+                    <span class="Games-badge">⭐ Popular</span>
+                </div>
+                <div class="Games-info">
+                    <h3>Game Booking Center</h3>
+                    <p>Reserve your premium gaming pod</p>
+                </div>
+            </div>
+            <div class="Games-card reveal">
+                <div class="Games-image-wrap">
+                    <img src="play_games.png" alt="Play Games" class="Games-image">
+                    <span class="Games-badge">🆕 New</span>
+                </div>
+                <div class="Games-info">
+                    <h3>VR Play Zone</h3>
+                    <p>Next-gen virtual reality adventures</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOURNAMENT -->
+    <section class="tournament" id="tournament">
+        <div class="tournament-inner">
+            <div class="tournament-image reveal">
+                <img src="tournament_banner.png" alt="Tournament">
+            </div>
+            <div class="tournament-text reveal">
+                <h2>Join Our Next Big Tournament</h2>
+                <p>Compete against the best players in the region, showcase your skills, and win incredible prizes. Our
+                    tournaments are professionally organized with live commentary and streaming.</p>
+                <ul class="prize-list">
+                    <li><i class="fas fa-medal"></i> 🥇 1st Place — ₹50,000 Cash Prize</li>
+                    <li><i class="fas fa-medal"></i> 🥈 2nd Place — ₹25,000 Cash Prize</li>
+                    <li><i class="fas fa-medal"></i> 🥉 3rd Place — ₹10,000 Cash Prize</li>
+                    <li><i class="fas fa-trophy"></i> Gaming Gear Giveaways for All Participants</li>
+                    <li><i class="fas fa-star"></i> Live Streaming on YouTube &amp; Twitch</li>
+                </ul>
+                <button class="btn-primary" id="tournamentRegBtn"><i class="fas fa-flag-checkered"></i> Register for
+                    Tournament</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials">
+        <h2 class="section-title reveal">What Gamers Say</h2>
+        <p class="section-subtitle reveal">Trusted by thousands of passionate gamers across the region.</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card reveal">
+                <div class="quote-icon">"</div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"The arena games section is absolutely incredible. The VR setup blew my mind
+                    — I've never felt so immersed in a game. Booking was super easy!"</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar av1">🎮</div>
+                    <div class="author-info">
+                        <h4>Arjun Sharma</h4>
+                        <span>Pro Gamer, Mumbai</span>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal">
+                <div class="quote-icon">"</div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Won my first esports tournament here! The coaching sessions helped me level
+                    up so fast. The team matchmaking is perfectly balanced."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar av2">🏆</div>
+                    <div class="author-info">
+                        <h4>Priya Mehta</h4>
+                        <span>Esports Champion, Pune</span>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal">
+                <div class="quote-icon">"</div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Cloud gaming with zero lag on my old laptop? I was shocked! The 24/7
+                    support team is super responsive. Highly recommended to every gamer."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar av3">⚡</div>
+                    <div class="author-info">
+                        <h4>Rahul Patel</h4>
+                        <span>Cloud Gaming Fan, Surat</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="pricing" id="pricing">
+        <h2 class="section-title reveal">Choose Your Plan</h2>
+        <p class="section-subtitle reveal">Flexible pricing for casual gamers to hardcore esports athletes.</p>
+        <div class="pricing-grid">
+            <div class="pricing-card reveal">
+                <div class="pricing-icon"><i class="fas fa-gamepad"></i></div>
+                <div class="pricing-name">Starter</div>
+                <div class="pricing-price">₹299</div>
+                <div class="pricing-period">per month</div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check-circle"></i> 10 Hours Gaming / Month</li>
+                    <li><i class="fas fa-check-circle"></i> Access to 15 Games</li>
+                    <li><i class="fas fa-check-circle"></i> Standard Support</li>
+                    <li><i class="fas fa-check-circle"></i> 1 Tournament Entry</li>
+                    <li><i class="fas fa-times-circle" style="color:#ccc"></i> VR Access</li>
+                    <li><i class="fas fa-times-circle" style="color:#ccc"></i> Pro Coaching</li>
+                </ul>
+                <button class="pricing-btn"
+                    onclick="document.getElementById('appointmentModal').style.display='block'">Get Started</button>
+            </div>
+            <div class="pricing-card popular reveal">
+                <div class="popular-badge">⭐ Most Popular</div>
+                <div class="pricing-icon"><i class="fas fa-fire"></i></div>
+                <div class="pricing-name">Pro Gamer</div>
+                <div class="pricing-price">₹799</div>
+                <div class="pricing-period">per month</div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check-circle"></i> Unlimited Gaming Hours</li>
+                    <li><i class="fas fa-check-circle"></i> Access to All 50+ Games</li>
+                    <li><i class="fas fa-check-circle"></i> Priority 24/7 Support</li>
+                    <li><i class="fas fa-check-circle"></i> 5 Tournament Entries</li>
+                    <li><i class="fas fa-check-circle"></i> Full VR Access</li>
+                    <li><i class="fas fa-check-circle"></i> 2 Coaching Sessions</li>
+                </ul>
+                <button class="pricing-btn"
+                    onclick="document.getElementById('appointmentModal').style.display='block'">Get Started</button>
+            </div>
+            <div class="pricing-card reveal">
+                <div class="pricing-icon"><i class="fas fa-crown"></i></div>
+                <div class="pricing-name">Elite</div>
+                <div class="pricing-price">₹1499</div>
+                <div class="pricing-period">per month</div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check-circle"></i> Unlimited Everything</li>
+                    <li><i class="fas fa-check-circle"></i> All Games + Early Access</li>
+                    <li><i class="fas fa-check-circle"></i> Dedicated Account Manager</li>
+                    <li><i class="fas fa-check-circle"></i> Unlimited Tournament Entries</li>
+                    <li><i class="fas fa-check-circle"></i> Premium VR Suite</li>
+                    <li><i class="fas fa-check-circle"></i> Weekly Coaching Sessions</li>
+                </ul>
+                <button class="pricing-btn"
+                    onclick="document.getElementById('appointmentModal').style.display='block'">Get Started</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+        <h2 class="section-title reveal">Frequently Asked Questions</h2>
+        <p class="section-subtitle reveal">Got questions? We've got answers.</p>
+        <div class="faq-inner">
+            <div class="faq-item reveal">
+                <button class="faq-question">How do I book a gaming session? <i
+                        class="fas fa-chevron-down"></i></button>
+                <div class="faq-answer">
+                    <p>Click the "Book Session" button at the top or use any "Book Now" button. Fill in your details,
+                        select your preferred date/time and game type, and you're set! You'll receive a confirmation.
+                    </p>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-question">Can I cancel or reschedule my booking? <i
+                        class="fas fa-chevron-down"></i></button>
+
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-question">What equipment is available? <i class="fas fa-chevron-down"></i></button>
+                <div class="faq-answer">
+                    <p>We offer high-end gaming PCs, VR headsets (Meta Quest, PlayStation VR), professional gaming
+                        chairs, mechanical keyboards, high-DPI mice, and 144Hz+ monitors.</p>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-question">How do tournaments work? <i class="fas fa-chevron-down"></i></button>
+                <div class="faq-answer">
+                    <p>Register via the Tournament section, pay the entry fee (waived for Elite members), and you'll
+                        receive bracket details 48 hours before the event. Tournaments are held every weekend.</p>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-question">Is there a minimum age requirement? <i
+                        class="fas fa-chevron-down"></i></button>
+                <div class="faq-answer">
+                    <p>Players must be at least 12 years old. Players under 18 require parental consent. VR experiences
+                        are recommended for ages 13+.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="newsletter">
+        <div class="newsletter-box reveal">
+            <h2>🎮 Stay in the Game</h2>
+            <p>Subscribe to get notified about upcoming tournaments, new game releases, exclusive offers, and gaming
+                tips from our pro coaches.</p>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit">Subscribe <i class="fas fa-arrow-right"></i></button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="contact">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="logo">
+                    <img src="game_logo.png" alt="Logo">
+                    GAMES
+                </div>
+                <p>Your ultimate destination for esports, VR gaming, cloud gaming, and pro-level competition. Level up
+                    your experience with us.</p>
+                <div class="footer-social">
+
+
+                    <a href="#" class="social-btn" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-btn" title="Discord"><i class="fab fa-discord"></i></a>
+                    <a href="#" class="social-btn" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/jignesh-saindane-39b0243a0?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+                        class="social-btn" title="LinkedIn" target="_blank" rel="noopener noreferrer"><i
+                            class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#Games">Games</a></li>
+                    <li><a href="#tournament">Tournament</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">Esports Tournaments</a></li>
+                    <li><a href="#">VR &amp; AR Experiences</a></li>
+                    <li><a href="#">Cloud Gaming</a></li>
+                    <li><a href="#">Pro Coaching</a></li>
+                    <li><a href="#">Team Matchmaking</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+
+                <div class="contact-item"><i class="fas fa-map-marker-alt"></i> Gujarat, India</div>
+                <div class="contact-item"><i class="fas fa-clock"></i> Mon–Sun: 9AM – 11PM</div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 GAMES. All rights reserved.</p>
+            <p>Made with ❤️ for gamers</p>
+        </div>
+    </footer>
+
+    <!-- APPOINTMENT MODAL -->
+    <div id="appointmentModal" class="modal">
+        <div class="modal-content" id="draggableModal">
+            <span class="close" id="closeModal">&times;</span>
+            <div class="modal-header">
+                <h2>🎮 Book Gaming Session</h2>
+            </div>
+            <form id="appointmentForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+91 XXXXX XXXXX" required>
+                </div>
+                <div class="form-group">
+                    <label for="date">Preferred Date</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="time">Preferred Time</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
+                <div class="form-group">
+                    <label for="game">Game Type</label>
+                    <select id="game" name="game" required>
+                        <option value="">Select a game type</option>
+                        <option value="esports">Esports Tournament</option>
+                        <option value="vr">VR Experience</option>
+                        <option value="cloud">Cloud Gaming</option>
+                        <option value="coaching">Pro Coaching</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="players">Number of Players</label>
+                    <input type="number" id="players" name="players" min="1" max="10" placeholder="1–10" required>
+                </div>
+                <button type="submit" class="submit-btn">⚡ Book Now</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener("DOMContentLoaded", function () {
+
+            /* ---- VANTA BACKGROUND ---- */
+            if (typeof VANTA !== 'undefined' && typeof THREE !== 'undefined') {
+                VANTA.NET({
+                    el: "#vanta-bg",
+                    THREE: THREE,
+                    mouseControls: true,
+                    touchControls: true,
+                    gyroControls: false,
+                    minHeight: 200.00,
+                    minWidth: 200.00,
+                    scale: 1.00,
+                    scaleMobile: 1.00,
+                    color: 0x00a3c4,
+                    backgroundColor: 0x04040f,
+                    points: 12.0,
+                    maxDistance: 22.0,
+                    spacing: 14.0
+                });
+            } else {
+                document.getElementById('vanta-bg').style.background =
+                    'linear-gradient(135deg, #04040f 0%, #0d1b3e 50%, #04040f 100%)';
+            }
+
+            /* ---- SCROLL REVEAL ---- */
+            const revealEls = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.12 });
+            revealEls.forEach(el => observer.observe(el));
+
+            /* ---- COUNTER ANIMATION ---- */
+            const counters = document.querySelectorAll('.stat-number[data-target]');
+            const counterObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        const target = parseInt(el.getAttribute('data-target'));
+                        const suffix = target >= 98 ? '%' : target >= 1000 ? '+' : '+';
+                        let current = 0;
+                        const step = Math.ceil(target / 60);
+                        const timer = setInterval(() => {
+                            current = Math.min(current + step, target);
+                            el.textContent = current.toLocaleString() + suffix;
+                            if (current >= target) clearInterval(timer);
+                        }, 25);
+                        counterObserver.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.5 });
+            counters.forEach(c => counterObserver.observe(c));
+
+            /* ---- SCROLL TO TOP ---- */
+            const scrollTopBtn = document.getElementById('scrollTop');
+            window.addEventListener('scroll', () => {
+                scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
+            });
+            scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+            /* ---- HAMBURGER MENU ---- */
+            const hamburger = document.getElementById('hamburger');
+            const mobileNav = document.getElementById('mobileNav');
+            hamburger.addEventListener('click', () => {
+                mobileNav.classList.toggle('open');
+            });
+            mobileNav.querySelectorAll('a').forEach(a => {
+                a.addEventListener('click', () => mobileNav.classList.remove('open'));
+            });
+
+            /* ---- MODAL ---- */
+            const modal = document.getElementById("appointmentModal");
+            const closeBtn = document.getElementById("closeModal");
+            const draggableModal = document.getElementById("draggableModal");
+
+            function openModal() {
+                modal.style.display = "block";
+                draggableModal.style.left = "50%";
+                draggableModal.style.top = "50%";
+                draggableModal.style.transform = "translate(-50%, -50%)";
+            }
+
+            document.getElementById("appointmentBtn").onclick = openModal;
+            document.getElementById("heroBookBtn").onclick = openModal;
+            document.getElementById("tournamentRegBtn").onclick = openModal;
+
+            closeBtn.onclick = () => { modal.style.display = "none"; };
+            window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+
+            /* Draggable modal */
+            let isDragging = false, offsetX = 0, offsetY = 0;
+            draggableModal.addEventListener('mousedown', function (e) {
+                const isHeader = e.target.classList.contains('modal-header') || e.target.tagName === 'H2';
+                if (isHeader || e.target === draggableModal) {
+                    isDragging = true;
+                    const rect = draggableModal.getBoundingClientRect();
+                    offsetX = e.clientX - rect.left;
+                    offsetY = e.clientY - rect.top;
+                    draggableModal.style.cursor = 'grabbing';
+                    e.preventDefault();
+                }
+            });
+            document.addEventListener('mousemove', function (e) {
+                if (!isDragging) return;
+                draggableModal.style.transform = 'none';
+                draggableModal.style.left = (e.clientX - offsetX) + 'px';
+                draggableModal.style.top = (e.clientY - offsetY) + 'px';
+            });
+            document.addEventListener('mouseup', function () {
+                if (isDragging) { isDragging = false; draggableModal.style.cursor = 'move'; }
+            });
+
+            /* Form submit */
+            document.getElementById("appointmentForm").addEventListener("submit", function (e) {
+                e.preventDefault();
+                const name = document.getElementById("name").value;
+                const email = document.getElementById("email").value;
+                const date = document.getElementById("date").value;
+                const time = document.getElementById("time").value;
+                alert(`✅ Booking Confirmed!\n\nHey ${name}! Your gaming session on ${date} at ${time} is booked.\nConfirmation sent to ${email}. See you in the arena! 🎮`);
+                this.reset();
+                modal.style.display = "none";
+            });
+
+            /* ---- FAQ ACCORDION ---- */
+            document.querySelectorAll('.faq-question').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const item = btn.parentElement;
+                    const isOpen = item.classList.contains('open');
+                    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+                    if (!isOpen) item.classList.add('open');
+                });
+            });
+
+            /* ---- NEWSLETTER ---- */
+            document.getElementById('newsletterForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                alert('🎮 You\'re subscribed! Get ready for exclusive gaming updates!');
+                this.reset();
+            });
+        });
+    </script>
+</body>
+
+</html>
